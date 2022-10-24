@@ -1,0 +1,56 @@
+// https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
+
+// Suche alle Aerzte (<Strg><Click> fuer Web Browser)
+GET {{baseUrl}}/api/
+Accept: application/hal+json
+ALPN: h2
+
+###
+
+// Suche mit vorhandener Arzt-ID
+GET {{baseUrl}}/api/00000000-0000-0000-0000-000000000001
+Accept: application/hal+json
+ALPN: h2
+
+###
+
+GET {{baseUrl}}/api/69252076-50eb-4898-aeba-1a9a45074389
+Accept: application/hal+json
+ALPN: h2
+
+###
+
+// Suche mit vorhandener Arzt-ID und application/json (404)
+GET {{baseUrl}}/api/00000000-0000-0000-0000-000000000001
+Accept: application/hal+json
+ALPN: h2
+
+###
+
+// Suche mit vorhandenem Nachnamen
+GET {{baseUrl}}/api?nachname=Delta
+Accept: application/hal+json
+ALPN: h2
+
+###
+
+// Suche mit nicht-vorhandenem Nachnamen
+GET {{baseUrl}}/api?nachname=Zeta
+Accept: application/hal+json
+ALPN: h2
+
+###
+
+// Suche mit vorhandener Email (mit URL Encoding)
+GET {{baseUrl}}/api?email=alpha%40acme.de
+Accept: application/hal+json
+ALPN: h2
+
+###
+
+// Suche mit nicht-vorhandener Email
+GET {{baseUrl}}/api?email=zeta%40nicht.vorhanden
+Accept: application/hal+json
+ALPN: h2
+
+###

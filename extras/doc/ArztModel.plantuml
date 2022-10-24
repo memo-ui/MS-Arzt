@@ -1,0 +1,107 @@
+' Copyright (C) 2019 - present Juergen Zimmermann, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+@startuml ArztModel
+
+skinparam classAttributeIconSize 0
+' skinparam monochrome true
+sprite $readonly [16x16/16z] {
+DOzH4iKW20CV4Y1jt-ZzRrl0kZ-w4pFWMibDydhMnmneOfpRG-696LiV82gX-R_yKf-xPdUTLDyzjgjx8CawcGb-1n5f7z8CrNOPK34JsF5yOD5vdDnZm51k
+dLSTd-Sbry-1dukSSUtr5uyDrmi0
+}
+
+package java {
+    package util {
+        class URL
+        class Currency
+    }
+
+    package math {
+        class BigDecimal
+    }
+
+    package time {
+        class LocalDate
+    }
+}
+
+package corg.springframework.hateoas {
+    class RepresentationModel<T>
+}
+
+package com.acme.arzt {
+    package entity {
+        class Arzt
+
+        class Umsatz {
+            <$readonly> betrag: BigDecimal
+            <$readonly> waehrung: Currency
+        }
+
+        class Adresse {
+            <$readonly> plz: String
+            <$readonly> ort: String
+        }
+
+        enum GeschlechtType {
+            MAENNLICH
+            WEIBLICH
+            DIVERS
+        }
+
+        enum FamilienstandType {
+            LEDIG
+            VERHEIRATET
+            GESCHIEDEN
+            VERWITWET
+        }
+
+        enum InteresseType {
+            SPORT
+            LESEN
+            REISEN
+        }
+    }
+
+    package rest #DDDDDD {
+        class ArztModel << entity >> {
+            <$readonly> nachname : String
+            <$readonly> email : String
+            <$readonly> kategorie: Int
+            <$readonly> newsletter : Boolean
+            <$readonly> geburtsdatum: LocalDate
+            <$readonly> homepage: URL
+        }
+
+        ArztModel *--> "1" Umsatz : umsatz
+        ArztModel *--> "1" Adresse : adresse
+        ArztModel *--> "1" GeschlechtType : geschlecht
+        ArztModel *--> "1" FamilienstandType : familienstand
+        ArztModel *--> "*" InteresseType : interessen
+
+        ArztModel -up-|> RepresentationModel
+
+        ArztModel ..>Arzt
+        ArztModel ..>LocalDate
+        ArztModel ..>URL
+
+        Umsatz ..> Currency
+        Umsatz ..> BigDecimal
+
+    }
+}
+
+hide empty members
+
+@enduml

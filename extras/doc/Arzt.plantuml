@@ -1,0 +1,107 @@
+' Copyright (C) 2019 - present Juergen Zimmermann, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+@startuml Arzt
+sprite $readonly [16x16/16z] {
+DOzH4iKW20CV4Y1jt-ZzRrl0kZ-w4pFWMibDydhMnmneOfpRG-696LiV82gX-R_yKf-xPdUTLDyzjgjx8CawcGb-1n5f7z8CrNOPK34JsF5yOD5vdDnZm51k
+dLSTd-Sbry-1dukSSUtr5uyDrmi0
+}
+
+skinparam classAttributeIconSize 0
+' skinparam monochrome true
+package java{
+    package util {
+        class URL
+        class Currency
+    }
+
+    package time{
+        class LocalDate
+        class LocalDateTime
+    }
+
+    package math {
+        class BigDecimal
+    }
+}
+
+package com.acme.arzt {
+    package entity #DDDDDD {
+        class ArztId << typealias >>
+
+        class Umsatz {
+            <$readonly> betrag: BigDecimal
+            <$readonly> waehrung: Currency
+        }
+
+        class Adresse {
+            <$readonly> plz: String
+            <$readonly> ort: String
+        }
+
+        enum GeschlechtType {
+            MAENNLICH
+            WEIBLICH
+            DIVERS
+        }
+
+        enum FamilienstandType {
+            LEDIG
+            VERHEIRATET
+            GESCHIEDEN
+            VERWITWET
+        }
+
+        enum InteresseType {
+            SPORT
+            LESEN
+            REISEN
+        }
+
+        class Arzt << entity >> {
+            @Id @GeneratedValue readonly id : ArztId?
+            nachname : String
+            email : String
+            kategorie: Int
+            newsletter : Boolean
+            geburtsdatum: LocalDate
+            homepage: URL
+            @Convert geschlecht: GeschlechtType
+            @Convert familienstand: FamilienstandType
+            @ElementCollection(fetch = EAGER) @CollectionTable @Column @Convert readonly interessen: Set<InteresseType>
+            @CreationTimestamp readonly erzeugt: LocalDateTime
+            @UpdateTimestamp readonly aktualisiert: LocalDateTime
+        }
+
+        Arzt *-up-> "1" Umsatz : @OneToOne(cascade = [...]) @JoinColumn(...) umsatz
+        Arzt *-up-> "1" Adresse :  @OneToOne(cascade = [...]) @JoinColumn(...) adresse
+
+
+        Arzt *--> "1" GeschlechtType : geschlecht
+        Arzt *--> "1" FamilienstandType : familienstand
+        Arzt *--> "*" InteresseType : interessen
+        Arzt ..> ArztId
+
+        Arzt ..> URL
+        Arzt ..> LocalDate
+        Arzt ..> LocalDateTime
+
+        Umsatz ..> Currency
+        Umsatz ..> BigDecimal
+    }
+}
+
+hide empty members
+
+@enduml

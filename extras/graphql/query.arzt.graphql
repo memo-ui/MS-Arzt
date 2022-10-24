@@ -1,0 +1,21 @@
+query ($id: ID! = "00000000-0000-0000-0000-000000000001") {
+  arzt(id: $id) {
+    nachname
+    email
+    kategorie
+    newsletter
+    geburtsdatum
+    homepage
+    geschlecht
+    familienstand
+    interessen
+    umsatz {
+      betrag
+      waehrung
+    }
+    adresse {
+      plz
+      ort
+    }
+  }
+}

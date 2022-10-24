@@ -1,0 +1,21 @@
+query  {
+    aerzte(input: {}) {
+        id
+        nachname
+        kategorie
+        newsletter
+        geburtsdatum
+        homepage
+        geschlecht
+        familienstand
+        interessen
+        umsatz {
+            betrag
+            waehrung
+        }
+        adresse {
+            plz
+            ort
+        }
+    }
+}

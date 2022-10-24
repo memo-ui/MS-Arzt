@@ -1,0 +1,52 @@
+// Einen neuen Arzt anlegen
+POST {{baseUrl}}/api
+Content-Type: application/json
+ALPN: h2
+
+< data/arzt-neu.json
+
+###
+
+// Einen neuen Arzt mit bereits existierender Emailadresse anlegen
+POST {{baseUrl}}/api
+Content-Type: application/json
+ALPN: h2
+
+< data/arzt-neu-email-exists.json
+
+###
+
+// Einen neuen Arzt mit fehlerhaften Daten auf deutsch anlegen
+POST {{baseUrl}}/api
+Content-Type: application/json
+Accept-Language: de
+ALPN: h2
+
+< data/arzt-neu-invalid.json
+
+###
+
+// Einen neuen Arzt mit fehlerhaften Daten auf englisch (= default) anlegen
+POST {{baseUrl}}/api
+Content-Type: application/json
+ALPN: h2
+
+< data/arzt-neu-invalid.json
+
+###
+
+// Einen neuen Arzt mit fehlerhaften Datentypen anlegen: 400
+POST {{baseUrl}}/api
+Content-Type: application/json
+ALPN: h2
+
+< data/arzt-neu-invalid-types.json
+
+###
+
+// Syntaktisch falscher JSON-Datensatz: 400 mit DecodingException
+POST {{baseUrl}}/api
+Content-Type: application/json
+ALPN: h2
+
+< data/invalid-json.txt

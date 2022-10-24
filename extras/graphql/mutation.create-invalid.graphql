@@ -1,0 +1,25 @@
+mutation {
+  create(
+    input: {
+      nachname: "?!:"
+      email: "email@"
+      kategorie: 11
+      newsletter: true
+      geburtsdatum: "2021-01-31"
+      homepage: "https://acme.com"
+      geschlecht: WEIBLICH
+      familienstand: LEDIG
+      interessen: [SPORT, SPORT]
+      umsatz: {
+        betrag: "1"
+        waehrung: "EUR"
+      }
+      adresse: {
+        plz: "1234"
+        ort: "Testort"
+      }
+    }
+  ) {
+    id
+  }
+}

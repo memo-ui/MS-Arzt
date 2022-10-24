@@ -1,0 +1,53 @@
+' Copyright (C) 2019 - present Juergen Zimmermann, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+@startuml ArztWriteService
+
+skinparam classAttributeIconSize 0
+
+package org.hibernate.reactive.mutiny {
+    interface SessionFactory
+}
+
+package com.acme.arzt {
+
+    package entity {
+        class Arzt << entity >>
+        class ArztId << typealias >>
+    }
+
+    package service #DDDDDD {
+        class ArztValidator
+        class ArztReadService
+        interface CreateResult
+        interface UpdateResult
+
+        class ArztWriteService << control >> << @Service >> {
+            + suspend create(arzt: Arzt): CreateResult
+            + suspend update(arzt: Arzt, id: ArztId): UpdateResult
+        }
+
+        ArztWriteService o--> "1" SessionFactory : sessionFactory
+        ArztWriteService o-down-> "1" ArztValidator
+        ArztWriteService o--> "1" ArztReadService
+        ArztWriteService .up.> Arzt
+        ArztWriteService .up.> ArztId
+        ArztWriteService .up.> CreateResult
+        ArztWriteService .up.> UpdateResult
+    }
+}
+
+hide empty members
+
+@enduml

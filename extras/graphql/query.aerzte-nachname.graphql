@@ -1,0 +1,21 @@
+query ($nachname: String = "a") {
+  aerzte(input: {nachname: $nachname}) {
+    id
+    email
+    kategorie
+    newsletter
+    geburtsdatum
+    homepage
+    geschlecht
+    familienstand
+    interessen
+    umsatz {
+      betrag
+      waehrung
+    }
+    adresse {
+      plz
+      ort
+    }
+  }
+}

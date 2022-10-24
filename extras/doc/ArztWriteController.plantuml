@@ -1,0 +1,75 @@
+' Copyright (C) 2019 - present Juergen Zimmermann, Hochschule Karlsruhe
+'
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program.  If not, see <https://www.gnu.org/licenses/>.
+@startuml ArztWriteController
+
+skinparam classAttributeIconSize 0
+
+package org.springframework {
+    package web.bind.annotation {
+        interface "@PathVariable" as PathVariable
+        interface "@RequestBody" as RequestBody
+    }
+
+    package http {
+        class ResponseEntity<T>
+
+        package server.reactive {
+            interface ServerHttpRequest
+        }
+    }
+}
+
+package com.acme.arzt {
+    package entity {
+        class ArztId << typealias >>
+    }
+
+    package service {
+        class ArztService << control >> << @Service >>
+    }
+
+    package rest #DDDDDD {
+
+        class ArztDTO <<entity>>
+
+        interface GenericBody
+        class Text
+        class Values
+        GenericBody +-- Text
+        GenericBody <|-- Text
+        GenericBody +-- Values
+        GenericBody <|-- Values
+
+        class ArztWriteController << boundary >> << @RestController >> << @RequestMapping >> {
+            + @PostMapping suspend create(@RequestBody arztDTO: ArztDTO, request: ServerHttpRequest): ResponseEntity<GenericBody>
+            + @PutMapping suspend update(@PathVariable id: ArztId, @RequestBody arztDTO: ArztDTO): ResponseEntity<GenericBody>
+        }
+
+        ArztWriteController o-right-> "1" ArztWriteService : service
+        ArztWriteController ..> ArztDTO
+        ArztWriteController ..> ArztId
+        ArztWriteController ..> GenericBody
+
+        ArztWriteController .up.> ResponseEntity
+        ArztWriteController .up.> ServerHttpRequest
+
+        ArztWriteController .up.> PathVariable
+        ArztWriteController .up.> RequestBody
+    }
+}
+
+hide empty members
+
+@enduml
